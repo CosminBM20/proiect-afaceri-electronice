@@ -4,6 +4,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../store/slices/userSlice'
 import { classNames } from '../utils/tailwind'
+import { ShoppingCartIcon } from '@heroicons/react/24/outline';
+
+
 
 const navigation = [
   { name: 'Homepage', href: '/' },
@@ -68,6 +71,15 @@ export default function Navbar() {
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+
+            {/* CART ICON */}
+            <button
+              onClick={() => navigate('/cart')}
+              className="relative p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3"
+            >
+              <ShoppingCartIcon className="h-6 w-6" />
+            </button>
+
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3">
               <MenuButton className="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">

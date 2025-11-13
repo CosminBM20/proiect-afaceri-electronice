@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { fetchProducts, deleteProduct } from '../api/product.routes';
+import { addToCart } from '../api/cart.routes';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function ProductsPage() {
@@ -64,6 +65,21 @@ export default function ProductsPage() {
 
   const handleCreateClick = () => {
     navigate('/products/create');
+  };
+
+  // ⭐ FUNCTIE ADD TO CART
+  const handleAddToCart = async (productId) => {
+    try {
+      const response = await addToCart(productId);
+
+      if (response?.success) {
+        toast.success("Added to cart!");
+      } else {
+        toast.error(response?.message || "Could not add to cart");
+      }
+    } catch (error) {
+      toast.error("Error adding to cart");
+    }
   };
 
   if (loading) {
@@ -128,6 +144,7 @@ export default function ProductsPage() {
                   src={product.image || 'https://via.placeholder.com/300'}
                   className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80 pointer-events-none"
                 />
+
                 {isAdmin && (
                   <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                     <button
@@ -140,9 +157,10 @@ export default function ProductsPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
                     </button>
+
                     <button
                       type="button"
-                      className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-md shadow-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-md shadow-lg transition-colors duration-200"
                       onClick={() => handleDeleteClick(product.id)}
                       disabled={deletingId === product.id}
                       title="Delete"
@@ -154,22 +172,32 @@ export default function ProductsPage() {
                   </div>
                 )}
               </div>
+
               <div className="mt-4 flex justify-between">
                 <div>
-                  <h3 className="text-sm text-gray-700">
-                    <a href="#" onClick={(e) => e.preventDefault()}>
-                      <span aria-hidden="true" className="absolute inset-0" />
-                      {product.name}
-                    </a>
-                  </h3>
+                  <h3 className="text-sm text-gray-700">{product.name}</h3>
                   <p className="mt-1 text-sm text-gray-500">{product.category}</p>
                 </div>
-                <p className="text-sm font-medium text-gray-900">${product.price}</p>
+
+                <p className="text-sm font-medium text-gray-900">
+                  ${product.price}
+                </p>
               </div>
+
+              {/*  ADD TO CART BUTTON HERE */}
+              
+                <button
+                  className="mt-3 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-md transition"
+                  onClick={() => handleAddToCart(product.id)}
+                >
+                  Add to Cart
+                </button>
+              
+
             </div>
           ))}
         </div>
       </div>
     </div>
-  )
+  );
 }
