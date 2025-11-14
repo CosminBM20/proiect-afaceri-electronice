@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+    <div className="min-h-[100vh] flex flex-col bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
       {/* HERO SECTION */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-16 pb-10 lg:pt-24 lg:pb-16">
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-12 pb-6 lg:pt-16 lg:pb-8 flex-grow">
         <div className="grid gap-10 lg:grid-cols-2 items-center">
           {/* Text */}
           <div>
@@ -98,7 +98,7 @@ export default function HomePage() {
       
 
       {/* FOOTER MINI */}
-      <footer className="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-800 py-4 text-center text-xs text-slate-500 mt-auto">
         SkyShop · Aircraft e-commerce · Built by Cosmin © 2025-2026
       </footer>
     </div>

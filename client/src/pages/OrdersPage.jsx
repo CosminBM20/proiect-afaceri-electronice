@@ -31,7 +31,7 @@ export default function OrdersPage() {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-slate-950 min-h-screen text-white">
+    <div className="bg-slate-950 min-h-screen text-white pb-20">
       <div className="max-w-5xl mx-auto px-4 py-10">
         <h1 className="text-3xl font-bold mb-6">
           {isAdmin ? "All Orders" : "My Orders"}

@@ -122,7 +122,7 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="bg-slate-950 h-screen overflow-y-auto py-10">
+    <div className="bg-slate-950 min-h-screen">
       <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="flex justify-between items-center mb-8">
           <div>
