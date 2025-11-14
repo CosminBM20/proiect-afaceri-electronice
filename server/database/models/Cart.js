@@ -1,4 +1,3 @@
-// server/database/models/Cart.js
 const { sequelize } = require('../server');
 const { DataTypes } = require('sequelize');
 const User = require('./User');
@@ -14,9 +13,6 @@ const Cart = sequelize.define('Cart', {
     type: DataTypes.INTEGER,
     defaultValue: 1,
     allowNull: false,
-    validate: {
-      min: 1,
-    }
   }
 }, {
   tableName: 'cart',
@@ -25,8 +21,11 @@ const Cart = sequelize.define('Cart', {
   updatedAt: 'updated_at',
 });
 
-// RELAȚII
+// RELATIONS
 Cart.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Cart, { foreignKey: 'userId' });
+
 Cart.belongsTo(Product, { foreignKey: 'productId' });
+Product.hasMany(Cart, { foreignKey: 'productId' });
 
 module.exports = Cart;

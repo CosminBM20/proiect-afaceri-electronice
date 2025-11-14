@@ -1,4 +1,4 @@
-// server/routes/product.routes.js
+
 const { Product } = require('../database/models');
 const express = require('express');
 const {verifyToken} = require('../utils/token.js');

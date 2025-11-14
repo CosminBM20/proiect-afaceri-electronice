@@ -1,3 +1,4 @@
+// server/routes/auth.routes.js
 const { User } = require('../database/models');
 const express = require('express');
 const bcrypt = require('bcrypt');
@@ -7,45 +8,52 @@ const { isValidToken } = require('../utils/token');
 const router = express.Router();
 
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    const existingUser = await User.findOne({
-        where: {
-            email: email,
-        }
-    });
-
-    if (!existingUser) {
-        return res.status(400).json({success: false, message: 'User not found', data: {}});
+  const existingUser = await User.findOne({
+    where: {
+      email: email,
     }
+  });
 
-    const isValidPassword = bcrypt.compareSync(password, existingUser.dataValues.password);
+  if (!existingUser) {
+    return res.status(400).json({success: false, message: 'User not found', data: {}});
+  }
 
-    if (!isValidPassword) {
-        return res.status(400).json({success: false, message: 'Not the same password', data: {}});
-    }
+  const isValidPassword = bcrypt.compareSync(password, existingUser.dataValues.password);
 
-    const token = jwt.sign({id: existingUser.dataValues.id, role: existingUser.dataValues.role}, process.env.TOKEN_SECRET, {
-        expiresIn: '1h'
-    })
+  if (!isValidPassword) {
+    return res.status(400).json({success: false, message: 'Not the same password', data: {}});
+  }
 
-    res.status(200).json({success: true, message: 'Valid email and password', data: token})
-})
+  const token = jwt.sign(
+    { id: existingUser.dataValues.id, role: existingUser.dataValues.role },
+    process.env.TOKEN_SECRET,
+    { expiresIn: '1h' }
+  );
+
+  // ⬅ ca înainte: trimitem DOAR tokenul în data
+  res.status(200).json({
+    success: true,
+    message: 'Valid email and password',
+    data: token
+  });
+});
 
 router.post('/check', async (req, res) => {
-    const token = req.body.token;
+  const token = req.body.token;
 
-    if (!token) {
-        return res.status(400).json({success: false, message: 'Token not found', data: {}});
-    }
+  if (!token) {
+    return res.status(400).json({success: false, message: 'Token not found', data: {}});
+  }
 
-    const validToken = isValidToken(token);
+  const validToken = isValidToken(token);
 
-    if (!validToken) {
-        return res.status(400).json({success: false, message: 'Token not valid', data: {}})
-    }
+  if (!validToken) {
+    return res.status(400).json({success: false, message: 'Token not valid', data: {}});
+  }
 
-    res.status(200).json({success: true, message: 'Token is valid', data: {}});
-})
+  res.status(200).json({success: true, message: 'Token is valid', data: {}});
+});
 
 module.exports = router;
